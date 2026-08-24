@@ -134,6 +134,18 @@ upstream guide can never match. Add sources to `EPG_SOURCES` to raise the cap.
 Pure abbreviations no string metric can bridge (`M+ LCAMPEONES` ->
 `M+ Liga de Campeones`) belong in `ALIASES` in `matcher.py`.
 
+## Logs
+
+The container log is capped at 3 files of 10 MB by the compose file. Every
+request is logged and a reachable host is probed continuously, so an uncapped
+`json-file` driver would grow until it filled the disk.
+
+Both tokens are redacted from the request line before it is written, so the
+guide token does not end up readable in `docker logs`. A reverse proxy in front
+keeps its own access log and needs the same treatment there — with
+nginx-proxy-manager, `access_log off;` in the host's advanced configuration is
+enough, since this service already logs the same requests safely.
+
 ## Resilience
 
 A failed refresh never replaces a working guide: the previous payload is kept

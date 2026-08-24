@@ -5,6 +5,14 @@ services:
     restart: unless-stopped
     ports:
       - "29956:8080"
+    # Without this the json-file driver grows without bound. Every request is
+    # logged, and a publicly reachable host is probed continuously, so the file
+    # would keep growing until it filled the disk.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       # A named volume, not a relative bind mount: Docker silently creates a
       # missing bind source as an empty root-owned directory, which left the
