@@ -1,0 +1,15 @@
+services:
+  epg:
+    build: .
+    container_name: epg-rewriter
+    restart: unless-stopped
+    ports:
+      - "29956:8080"
+    volumes:
+      # channels.txt lives here. Holds names only, never credentials.
+      - ./data:/data
+    environment:
+      # Comma-separated. Add more sources to lift the coverage ceiling.
+      EPG_SOURCES: "https://iptv-epg.org/files/epg-es.xml.gz"
+      REFRESH_HOURS: "3"
+      FUZZY_CUTOFF: "0.92"

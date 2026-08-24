@@ -1,0 +1,475 @@
+# Canales en vivo de la playlist IPTV — SOLO NOMBRES.
+# Sin URLs ni credenciales: este archivo es seguro de compartir/commitear.
+# Regeneralo cuando tu proveedor agregue o renombre canales.
+
+### SUP MOVIES ###
+#DAZN 1 FULL HD
+101 PLAY
+101TV HD
+1“ FEDERACION 4K
+24 HORAS FULL HD
+24/7 Absentia
+24/7 Alerta Aeropuerto
+24/7 Altered Carbon
+24/7 Ana
+24/7 Arrow
+24/7 Atípico
+24/7 Ballers
+24/7 Batwoman
+24/7 Beowulf Return to the Shieldlands
+24/7 Big Bang
+24/7 Black Sails
+24/7 Blindspot
+24/7 Blood & Water
+24/7 Bodyguard
+24/7 Bolivar
+24/7 Bones
+24/7 Breaking Bad
+24/7 Carta al rey
+24/7 Castle
+24/7 Chernobyl
+24/7 Chicago Fire
+24/7 Cobra Kai
+24/7 Cosmos
+24/7 CSI_Miami
+24/7 DARK
+24/7 Desaparecidos
+24/7 Dexter
+24/7 El Bombero Sam
+24/7 El Ultimo baile
+24/7 FBI
+24/7 Fernando
+24/7 Good Doctor
+24/7 Hawaii 5-0
+24/7 Hunters
+24/7 ICE
+24/7 Jack Ryan
+24/7 Jessica Jones
+24/7 Juego de tronos
+24/7 Jugando con fuego
+24/7 La casa de papel
+24/7 La Patrulla Canina 1
+24/7 La Patrulla Canina 2
+24/7 Lenox Hill
+24/7 Locke and  Key
+24/7 Los Soprano
+24/7 MacGyver
+24/7 Maldita
+24/7 Masha y el Oso
+24/7 Messiah
+24/7 Mr Robot
+24/7 Narcos
+24/7 Navy Investigacion Criminal
+24/7 NCIS Criminologia Naval
+24/7 NCIS Los Angeles
+24/7 Pandemia: como prevenir un brote
+24/7 Peppa Pig 1
+24/7 Peppa Pig 2
+24/7 Raised By Wolves
+24/7 Rogue
+24/7 Seal Team
+24/7 See
+24/7 Snowpiercer  Rompenieves
+24/7 Station 19
+24/7 Supergirl
+24/7 SWAT
+24/7 The First
+24/7 The Five
+24/7 The Mandalorian
+24/7 The Witcher
+24/7 Vikingos
+24/7 Wu Assassins
+24/7 XIII The Series
+7TV MALAGA HD
+A3SERIES
+AMC 4K
+AMC BREAK
+AMC BREAK FULL HD
+AMC CRIME
+AMC CRIME FULL HD
+AMC HD
+AndaluciaTV
+ANTENA 3 4K
+ANTENA 3 FULL HD
+ANTENA 3 HD
+Apple TV+ 1
+Apple TV+ 2
+ARAGON TV FULL HD
+ARAGON TV INT
+atreseries HD
+AXN FULL HD
+AXN HD
+AXN MOVIES HD
+BABY TV
+BABY TV FULL HD
+BBC DRAMA
+BBC FOOD
+BBC HISTORY
+BBC TOP GEAR
+BE MAD FULL HD
+BE MAD HD
+BeMad tv HD
+BOING
+BOING FULL HD
+BOM
+C. TORREVISION HD
+CALLE 13 FULL HD
+CALLE 13 HD
+Canal Alquiler HD 1
+CANAL COCINA
+CANAL COCINA FULL HD
+CANAL DECASA
+CANAL DECASA FULL HD
+CANAL MALAGA HD
+CANAL ODISEA
+CANAL ODISEA FULL HD
+CANAL SUR 2 HD
+CANAL SUR HD
+CASTILLA LA MANCHA
+CAZAVISION
+CAZAyPESCA 4K
+CAZAyPESCA FULL HD
+CAZAyPESCA HD
+CINE+ 1 HD
+CINE+ 2 HD
+Cinelatino HD 1
+Cinelatino HD 2
+Cinelatino HD 3
+Cinelatino HD 4
+Cinelatino HD 5
+Cinelatino HD 6
+Cinelatino HD 7
+CLAN  TVE
+CLAN TVE FULL HD
+Classica
+COMEDYCENTRAL
+COMEDYCENTRAL FULL HD
+COSMO
+COSMO FULL HD
+CUATRO 4K
+CUATRO FULL HD
+CUATRO HD
+DAZN 1 HD
+DAZN 2 FULL HD
+DAZN 2 HD
+DAZN 3 FULL HD
+DAZN 3 HD
+DAZN 4 FULL HD
+DAZN 4 HD
+DAZN ACB 1
+DAZN ACB 10
+DAZN ACB 2
+DAZN ACB 3
+DAZN ACB 4
+DAZN ACB 5
+DAZN ACB 6
+DAZN ACB 7
+DAZN ACB 8
+DAZN ACB 9
+DAZN F1 4K
+DAZN F1 FULL HD
+DAZN F1 HD
+DAZN LALIGA
+DAZN LALIGA 2 4K
+DAZN LALIGA 2 FULL HD
+DAZN LALIGA 2 HD
+DAZN LALIGA 4K
+DAZN LALIGA FULL HD
+DAZN LALIGA HD
+DAZN LALIGA HD 235
+DAZN LALIGA HD+
+DAZN LALIGA SD
+DAZN MOTO GP FULL HD
+DAZN MOTO GP HD
+DAZN MOTO GP SD
+DAZN RALLY TV
+DAZNBaloncesto
+DAZNBaloncesto2
+DAZNBaloncesto3
+DISCOVERY
+DISCOVERY FULL HD
+Disney + 1
+DISNEY CH FULL HD
+DISNEY CH HD
+DISNEY JR
+DISNEY JR FULL HD
+Disney Junior Movies 1
+Disney Junior Movies 2
+DIVINITY
+DIVINITY FULL HD
+DKISS
+DMAX
+DreamWorks
+DreamWorks FULL HD
+El Rincn del Profesor
+ENERGY
+ENERGY FULL HD
+ENFAMILIA
+ENFAMILIA FULL HD
+EUROSPORT 1 4K
+EUROSPORT 1 FULL HD
+EUROSPORT 1 HD
+EUROSPORT 2
+EUROSPORT 2 FULL HD
+EUROSPORT2HD
+EXTREMADURA
+FDF
+FDF FULL HD
+Ficción Total 1
+FOX FULL HD
+GOL PLAY
+GOL PLAY FULL HD
+HISTORIA
+HISTORIA FULL HD
+HOLLYWOOD
+IBERALIA TV
+IBERALIA TV FULL HD
+LA 1 4K
+LA 1 FULL HD
+LA 1 HD
+LA 2 4K
+LA 2 FULL HD
+LA 2 HD
+La Casa de las Series
+LA SEXTA 4K
+LA SEXTA FULL HD
+LA SEXTA HD
+LALIGA INSIDE (PLUS)
+LALIGA TV HYPERMOTION 2 4K
+LALIGA TV HYPERMOTION 2 FULL HD
+LALIGA TV HYPERMOTION 2 HD
+LALIGA TV HYPERMOTION 3 4K
+LALIGA TV HYPERMOTION 3 FULL HD
+LALIGA TV HYPERMOTION 3 HD
+LALIGA TV HYPERMOTION 4K
+LALIGA TV HYPERMOTION FULL HD
+LALIGA TV HYPERMOTION HD
+M+ #VAMOS 4K
+M+ ACCION 2 FULL HD
+M+ ACCION 2 HD
+M+ ACCION 4K
+M+ ACCION FULL HD
+M+ ACCION HD
+M+ Casa de la Risa
+M+ Cine con Sabor 1
+M+ Cine con Sabor 2
+M+ Cine Del Mundo 4K 1
+M+ Cine Del Mundo 4K 2
+M+ Cine Espagnol
+M+ Cine Español FULL HD
+M+ Cinesur 1
+M+ Cinesur 2
+M+ Cinesur 3
+M+ Cinesur 4
+M+ CineTapas 1
+M+ CineTapas 2
+M+ CL.SICOS 4K
+M+ CLASICOS FULL HD
+M+ CLASICOS HD
+M+ COMEDIA 4K
+M+ COMEDIA FULL HD
+M+ COMEDIA HD
+M+ COMIC
+M+ DEPORTES FULL HD
+M+ DEPORTES2 FULL HD
+M+ DEPORTES2HD (SOLO EVENTOS)
+M+ DEPORTES3 (SOLO EVENTOS)
+M+ DEPORTES4 (SOLO EVENTOS)
+M+ DEPORTES5 (SOLO EVENTOS)
+M+ DEPORTES6 (SOLO EVENTOS)
+M+ DEPORTESHD
+M+ DRAMA 2 FULL HD
+M+ DRAMA 2 HD
+M+ DRAMA 4K
+M+ DRAMA FULL HD
+M+ DRAMA HD
+M+ ELLAS #V HD
+M+ ELLAS FULL HD
+M+ Estrenos 4K
+M+ Estrenos FULL HD
+M+ Estrenos HD
+M+ Ficcion 1 HD
+M+ Ficcion 2 HD
+M+ Ficcion Premium
+M+ GOLF 2 FULL HD
+M+ GOLF 2 HD
+M+ GOLF 4K
+M+ GOLF FULL HD
+M+ GOLF HD
+M+ HITS 4K
+M+ Iberian Screen
+M+ Indie 4K
+M+ Indie FULL HD
+M+ Indie HD
+M+ La Septima Pantalla 1
+M+ La Septima Pantalla 2
+M+ LALIGA 2 4K
+M+ LALIGA 3 4K
+M+ LaLigaTV
+M+ LaLigaTV 2 FULL HD
+M+ LaLigaTV 2 HD
+M+ LaLigaTV 3 HD
+M+ LaLigaTV 4K
+M+ LaLigaTV FULL HD
+M+ LaLigaTVHD
+M+ LaLigaTVHD 235
+M+ LaLigaTVHD+
+M+ LaLigaTVSD
+M+ LCAMPEONES +
+M+ LCAMPEONES 2 FULL HD
+M+ LCAMPEONES 2 HD
+M+ LCAMPEONES 3 FULL HD
+M+ LCAMPEONES 3 HD
+M+ LCAMPEONES 4
+M+ LCAMPEONES 4K
+M+ LCAMPEONES 5
+M+ LCAMPEONES FULL HD
+M+ LCAMPEONES HD
+M+ LCAMPEONES HD+
+M+ LCAMPEONES SD
+M+ Mission impossible
+M+ NAVIDAD
+M+ NAVIDAD FULL HD
+M+ Netflix 1
+M+ Netflix 2
+M+ Netflix y Siesta
+M+ Originales 4K
+M+ Originales FULL HD
+M+ Originales HD
+M+ PeliFlix 1
+M+ SERIES 4K
+M+ SERIES FULL HD
+M+ SERIES HD
+M+ VAMOS 2 4K
+M+ VAMOS 2 HD
+M+ VAMOS 3 HD
+M+ VAMOS FULL HD
+M+ VAMOS HD
+M+ WARNER TV +1
+M+Baloncesto
+M+Baloncesto2
+M+DEPORTES 2 4K
+M+DEPORTES 4K
+M+Documentales 4K
+M+Documentales FULL HD
+M+Documentales HD
+M+ELLAS V 4K
+M+LCAMPEON2 4K
+M+LCAMPEON3 4K
+Marvel Studios 1
+Marvel Studios 2
+mega
+MEZZO LIVE HD
+movistar infantiles 1
+movistar infantiles 2
+movistar infantiles 3
+movistar infantiles 4
+movistar infantiles 5
+movistar infantiles 6
+movistar infantiles 7
+movistar infantiles 8
+movistar infantiles 9
+Movistar Plus+ 4K
+Movistar Plus+ FULL HD
+Movistar Plus+ HD
+MOVISTAR+ MARVEL 1
+MOVISTAR+ MARVEL 2
+MOVISTAR+ MARVEL 3
+MOVISTAR+ MARVEL 4
+MOVISTAR+ MARVEL 5
+Movistar+1 4K
+MTV ESPANA
+MTV ESPANA FULL HD
+MULTIDEPORTE
+MULTIDEPORTE FULL HD
+MUNDO
+MUNDOTORO
+NAT GEO
+NAT GEO FULL HD
+NAT GEO WILD
+NAT GEO WILD FULL HD
+NEOX
+NEOX FULL HD
+Netflix 1
+Netflix 10
+Netflix 2
+Netflix 3
+Netflix 4
+Netflix 5
+Netflix 6
+Netflix 7
+Netflix 8
+Netflix 9
+New Alquiler 4K 1
+New Alquiler 4K 2
+New Alquiler 4K 3
+New Alquiler 4K 4
+New Alquiler 4K 5
+New Alquiler 4K 6
+NICK JR
+NICK JR FULL HD
+NICKELODEON
+NICKELODEON FULL HD
+NOVA
+NOVA FULL HD
+ONETORO FULL HD
+ONETORO HD
+ONETORO HD +
+PARAMOUNT
+PARAMOUNT FULL HD
+PARAMOUNT NETWORK
+Prime Video 1
+Prime Video 2
+PRIMERA FEDERACION HD
+Procaja Tv1
+Procaja Tv2
+Procaja Tv3
+PTV MALAGA
+Rakuten TV Family HD
+Rakuten TV Top 1 HD
+Rakuten TV Top 2 HD
+Realmadrid TV FULL HD
+Realmadrid TV HD
+SkyShowtime 1
+SkyShowtime 2
+SOMOS
+STAR Channel
+SUNDANCE TV
+SUNDANCE TV FULL HD
+Super Movie 1
+Super Movie 10
+Super Movie 11
+Super Movie 12
+Super Movie 2
+Super Movie 3
+Super Movie 4
+Super Movie 5
+Super Movie 6
+Super Movie 7
+Super Movie 8
+Super Movie 9
+SYFY
+SYFY FULL HD
+TCM
+TCM FULL HD
+TELE MADRID
+TELECINCO 4K
+TELECINCO FULL HD
+TELECINCO HD
+TELEDEPORTE FULL HD
+TELEDEPORTE HD
+TEN
+Trailer 2020
+TRECE
+TV NACIONAL 1
+TV NACIONAL 2
+TV NACIONAL 3
+TV NACIONAL 4
+TV NACIONAL 5
+TV NACIONAL 6
+TV3 Cat HD
+TV3 HD
+UEFA Champions League
+UFC HD
+WARNERTV
+WARNERTV FULL HD

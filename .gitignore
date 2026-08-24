@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+# Runtime cache: rebuilt on every start.
+data/cache/
+
+# Never commit a playlist: stream URLs embed provider credentials.
+*.m3u
+*.m3u8
+*.xml.gz
