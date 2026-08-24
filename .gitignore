@@ -11,3 +11,6 @@ data/cache/
 
 # Secrets: tokens live here, never in the repo.
 .env
+
+# Project context notes: kept locally, not tracked.
+.engram
