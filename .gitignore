@@ -13,4 +13,7 @@ data/cache/
 .env
 
 # Project context notes: kept locally, not tracked.
-.engram
+PROJECT-CONTEXT.md
+
+# Engram memory store: local sync chunks, never tracked.
+.engram/
