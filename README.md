@@ -7,6 +7,32 @@ playlist, and serves the result over HTTP.
 `channels.txt`, so no credentials ever enter the container and the provider
 sees no extra connections.
 
+## Quick start
+
+```bash
+docker compose up -d --build
+```
+
+The first build downloads and rewrites the guide, which takes a moment. Watch
+for it to finish:
+
+```bash
+curl -s http://localhost:29956/health    # "no guide" (503) -> "ok" (200)
+```
+
+A 503 here means the guide is still building, not that something is broken.
+Once it answers `ok`:
+
+```bash
+curl -o guide.xml.gz http://localhost:29956/epg.xml.gz
+```
+
+Point the player's guide URL at `http://<host>:29956/epg.xml.gz` and leave the
+playlist URL exactly as it is.
+
+> Publishing this beyond your LAN? Read [Exposing this publicly](#exposing-this-publicly)
+> first — the guide token travels in the URL and needs TLS.
+
 ## Why it rewrites instead of renaming
 
 The relation between guide and playlist is 1:N, not 1:1. One guide channel
@@ -20,16 +46,6 @@ M+LaLigaTV.es  ->  M+ LaLigaTV, M+ LaLigaTV 4K, M+ LaLigaTV FULL HD,
 A `<channel>` can hold only one id, so renaming fixes one variant and orphans
 the rest. Each matched channel is therefore duplicated once per variant, with
 its programmes copied along.
-
-## Quick start
-
-```bash
-docker compose up -d --build
-curl -o guide.xml.gz http://localhost:29956/epg.xml.gz
-```
-
-Point the player's guide URL at `http://<host>:29956/epg.xml.gz` and leave the
-playlist URL exactly as it is.
 
 ## Endpoints
 
