@@ -5,6 +5,7 @@ Never contacts the IPTV provider — channel names come from a local file.
 """
 import logging
 import os
+import shutil
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -22,6 +23,10 @@ PORT = int(os.environ.get("PORT", "8080"))
 REFRESH_HOURS = float(os.environ.get("REFRESH_HOURS", "12"))
 CUTOFF = float(os.environ.get("FUZZY_CUTOFF", "0.92"))
 CACHE_FILE = os.environ.get("CACHE_FILE", "/data/cache/epg.xml.gz")
+# Shipped inside the image. A bind mount or a fresh named volume arrives empty,
+# and Docker creates a missing bind source silently instead of failing, so the
+# configured path cannot be relied on to exist on a first deploy.
+BUNDLED_CHANNELS = os.environ.get("BUNDLED_CHANNELS", "/app/channels.txt")
 
 
 class State:
@@ -67,10 +72,38 @@ class State:
 STATE = State()
 
 
+def resolve_channels_file():
+    """Return a readable channel list, seeding the volume on first run.
+
+    Order: the configured path, else the copy bundled in the image. When the
+    configured path is missing but writable, the bundled copy is written there
+    so the file becomes editable and survives restarts.
+    """
+    if os.path.exists(CHANNELS_FILE):
+        return CHANNELS_FILE
+    if not os.path.exists(BUNDLED_CHANNELS):
+        raise RuntimeError(
+            f"no channel list: {CHANNELS_FILE} is missing and no bundled copy "
+            f"at {BUNDLED_CHANNELS}")
+    try:
+        os.makedirs(os.path.dirname(CHANNELS_FILE), exist_ok=True)
+        shutil.copyfile(BUNDLED_CHANNELS, CHANNELS_FILE)
+        log.warning("%s was missing; seeded it from the bundled list. "
+                    "Edit that file to customise, it persists in the volume.",
+                    CHANNELS_FILE)
+        return CHANNELS_FILE
+    except OSError as exc:
+        log.warning("%s is missing and not writable (%s); using the bundled "
+                    "list read-only. Mount a writable volume to customise it.",
+                    CHANNELS_FILE, exc)
+        return BUNDLED_CHANNELS
+
+
 def build():
-    names = load_channel_names(CHANNELS_FILE)
+    path = resolve_channels_file()
+    names = load_channel_names(path)
     if not names:
-        raise RuntimeError(f"no channel names in {CHANNELS_FILE}")
+        raise RuntimeError(f"no channel names in {path}")
     channels, programmes = parse_sources(SOURCES)
     if not channels:
         raise RuntimeError("no EPG source could be read")
@@ -86,7 +119,14 @@ def refresher():
             build()
         except Exception as exc:
             STATE.last_error = str(exc)
-            log.error("refresh failed, keeping previous guide: %s", exc)
+            with STATE.lock:
+                had_guide = STATE.gz is not None
+            if had_guide:
+                log.error("refresh failed, keeping previous guide: %s", exc)
+            else:
+                # Nothing to fall back on: the service is up but serving 503.
+                log.error("refresh failed and NO guide is available, "
+                          "so /epg.xml.gz will return 503: %s", exc)
         time.sleep(REFRESH_HOURS * 3600)
 
 

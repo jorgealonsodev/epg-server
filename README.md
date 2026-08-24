@@ -59,6 +59,19 @@ followed by a space — a bare `#` starts a real channel name in the wild
 Regenerate it when the provider adds or renames channels. Names only: keep URLs
 and credentials out of this file.
 
+The list lives in the `epg-data` named volume. A copy is baked into the image,
+and the service seeds the volume from it on first run, so a fresh deployment
+works with no manual file placement. Edit the copy in the volume to customise:
+
+```bash
+docker exec -it epg-rewriter vi /data/channels.txt
+docker exec epg-rewriter kill -HUP 1   # or: curl .../refresh
+```
+
+Do not use a relative bind mount such as `./data:/data` here. Docker creates a
+missing bind source as an empty root-owned directory instead of failing, which
+leaves the service running with no channel list and only a 503 to show for it.
+
 ## Coverage
 
 Matching runs in tiers, and prefers leaving a channel unmatched over guessing:

@@ -6,10 +6,17 @@ services:
     ports:
       - "29956:8080"
     volumes:
-      # channels.txt lives here. Holds names only, never credentials.
-      - ./data:/data
+      # A named volume, not a relative bind mount: Docker silently creates a
+      # missing bind source as an empty root-owned directory, which left the
+      # service with no channel list and no way to report it clearly.
+      # The image seeds channels.txt here on first run; edit it to customise.
+      - epg-data:/data
     environment:
       # Comma-separated. Add more sources to lift the coverage ceiling.
       EPG_SOURCES: "https://iptv-epg.org/files/epg-es.xml.gz"
+      # Matches the upstream regeneration cycle.
       REFRESH_HOURS: "3"
       FUZZY_CUTOFF: "0.92"
+
+volumes:
+  epg-data:
