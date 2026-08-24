@@ -144,7 +144,15 @@ def refresher():
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *a):
-        log.info("%s %s", self.address_string(), fmt % a)
+        # The guide token travels in the URL, so it would otherwise be written
+        # in clear on every request. Anyone who can read the container logs
+        # would then hold the token.
+        line = fmt % a
+        if GUIDE_TOKEN:
+            line = line.replace(GUIDE_TOKEN, "<token>")
+        if ADMIN_TOKEN:
+            line = line.replace(ADMIN_TOKEN, "<token>")
+        log.info("%s %s", self.address_string(), line)
 
     def _is_admin(self):
         """Private caller, or the right token when behind a reverse proxy."""
