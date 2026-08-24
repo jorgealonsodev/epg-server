@@ -37,9 +37,9 @@ playlist URL exactly as it is.
 |---|---|
 | `/epg.xml.gz` | The rewritten guide (gzip). Use this one. |
 | `/epg.xml` | Same, uncompressed. |
-| `/status` | Match counts and the full unmatched list. |
+| `/status` | Match counts and the full unmatched list. Restricted. |
 | `/health` | 200 once a guide is available. |
-| `/refresh` | Trigger a rebuild without restarting. |
+| `/refresh` | Trigger a rebuild without restarting. Restricted. |
 
 ## Configuration
 
@@ -49,6 +49,29 @@ playlist URL exactly as it is.
 | `REFRESH_HOURS` | `3` | Matches the upstream regeneration cycle. Reading faster gains nothing; slower lags behind schedule corrections. Accepts fractions. |
 | `FUZZY_CUTOFF` | `0.92` | Raise it for stricter matching. |
 | `CHANNELS_FILE` | `/data/channels.txt` | Names only, one per line. |
+| `ADMIN_TOKEN` | unset | Required for the restricted endpoints. See below. |
+
+## Exposing this publicly
+
+Scanning is unavoidable: any reachable address is probed continuously by
+automated traffic. What matters is that a probe gains nothing.
+
+`/epg.xml.gz` and `/health` are open. `/status` is not — it lists every channel
+name — and neither is `/refresh`, which would let an anonymous caller trigger
+downloads in a loop. Both answer 404 rather than 403, since a refusal confirms
+the endpoint exists. `/` returns three lines and no inventory.
+
+By default the restricted endpoints accept private and loopback callers only.
+Behind a reverse proxy that check is useless, because every request then carries
+the proxy's own private address — so set `ADMIN_TOKEN`, which switches the check
+to the token alone and ignores the source address:
+
+```bash
+curl -H "X-Admin-Token: $ADMIN_TOKEN" http://<host>:29956/status
+```
+
+If the player lives on the same LAN, the stronger option is not to publish the
+port to the internet at all.
 
 ## channels.txt
 

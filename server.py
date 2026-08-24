@@ -5,6 +5,8 @@ Never contacts the IPTV provider — channel names come from a local file.
 """
 import logging
 import os
+import ipaddress
+import secrets
 import shutil
 import threading
 import time
@@ -27,6 +29,11 @@ CACHE_FILE = os.environ.get("CACHE_FILE", "/data/cache/epg.xml.gz")
 # and Docker creates a missing bind source silently instead of failing, so the
 # configured path cannot be relied on to exist on a first deploy.
 BUNDLED_CHANNELS = os.environ.get("BUNDLED_CHANNELS", "/app/channels.txt")
+# /status lists every channel name and /refresh triggers a download, so both
+# are restricted. Public IPs get 404, not 403: a refusal confirms the endpoint
+# exists. Set ADMIN_TOKEN to reach them through a reverse proxy, where every
+# request arrives with the proxy's own private address.
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "").strip()
 
 
 class State:
@@ -134,6 +141,22 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *a):
         log.info("%s %s", self.address_string(), fmt % a)
 
+    def _is_admin(self):
+        """Private caller, or the right token when behind a reverse proxy."""
+        if ADMIN_TOKEN:
+            supplied = self.headers.get("X-Admin-Token", "")
+            if secrets.compare_digest(supplied, ADMIN_TOKEN):
+                return True
+        try:
+            peer = ipaddress.ip_address(self.client_address[0])
+        except (ValueError, IndexError):
+            return False
+        # A proxy hop makes every caller look private, so the token is the only
+        # way in once one is configured.
+        if ADMIN_TOKEN:
+            return False
+        return peer.is_private or peer.is_loopback
+
     def _send(self, code, body, ctype, extra=None):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
@@ -150,7 +173,20 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path.split("?")[0].rstrip("/") or "/"
 
-        if path in ("/", "/status"):
+        if path == "/":
+            # Deliberately terse: this is what scanners see.
+            with STATE.lock:
+                ready = STATE.gz is not None
+            body = ("epg-rewriter\n"
+                    f"guide: {'ready' if ready else 'not built yet'}\n"
+                    "GET /epg.xml.gz\n").encode()
+            self._send(200, body, "text/plain; charset=utf-8")
+            return
+
+        if path == "/status":
+            if not self._is_admin():
+                self._send(404, b"not found", "text/plain")
+                return
             with STATE.lock:
                 lines = [
                     "epg-rewriter",
@@ -193,6 +229,9 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         if path == "/refresh":
+            if not self._is_admin():
+                self._send(404, b"not found", "text/plain")
+                return
             threading.Thread(target=build, daemon=True).start()
             self._send(202, b"refresh started", "text/plain")
             return
