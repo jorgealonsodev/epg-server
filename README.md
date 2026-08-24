@@ -43,6 +43,11 @@ playlist URL exactly as it is.
 
 ## Configuration
 
+Copy `.env.example` to `.env` and fill in the tokens. Every setting also has a
+default in `docker-compose.yml`, so the stack runs with no `.env` at all — an
+absent or blank value falls back rather than breaking the deployment. In
+Portainer, set the same names as stack environment variables.
+
 | Variable | Default | Notes |
 |---|---|---|
 | `EPG_SOURCES` | iptv-epg.org ES | Comma-separated. More sources lift the ceiling. |

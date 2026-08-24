@@ -20,11 +20,14 @@ services:
       # The image seeds channels.txt here on first run; edit it to customise.
       - epg-data:/data
     environment:
+      # Every tunable falls back to the value shown, so the stack runs with no
+      # .env at all. Override any of them there or in the deployment.
+      #
       # Comma-separated. Add more sources to lift the coverage ceiling.
-      EPG_SOURCES: "https://iptv-epg.org/files/epg-es.xml.gz"
+      EPG_SOURCES: "${EPG_SOURCES:-https://iptv-epg.org/files/epg-es.xml.gz}"
       # Matches the upstream regeneration cycle.
-      REFRESH_HOURS: "3"
-      FUZZY_CUTOFF: "0.92"
+      REFRESH_HOURS: "${REFRESH_HOURS:-3}"
+      FUZZY_CUTOFF: "${FUZZY_CUTOFF:-0.92}"
       # Gates the guide URL itself. Players cannot send headers, so the token
       # travels in the URL: /<token>/epg.xml.gz or ?token=<value>.
       # Leave unset to serve the guide openly. Set it from a .env file or the
