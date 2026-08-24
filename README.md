@@ -49,7 +49,8 @@ playlist URL exactly as it is.
 | `REFRESH_HOURS` | `3` | Matches the upstream regeneration cycle. Reading faster gains nothing; slower lags behind schedule corrections. Accepts fractions. |
 | `FUZZY_CUTOFF` | `0.92` | Raise it for stricter matching. |
 | `CHANNELS_FILE` | `/data/channels.txt` | Names only, one per line. |
-| `ADMIN_TOKEN` | unset | Required for the restricted endpoints. See below. |
+| `GUIDE_TOKEN` | unset | Gates the guide URL. Carried in the URL, not a header. |
+| `ADMIN_TOKEN` | unset | Gates `/status` and `/refresh`. Sent as a header. |
 
 ## Exposing this publicly
 
@@ -60,6 +61,27 @@ automated traffic. What matters is that a probe gains nothing.
 name — and neither is `/refresh`, which would let an anonymous caller trigger
 downloads in a loop. Both answer 404 rather than 403, since a refusal confirms
 the endpoint exists. `/` returns three lines and no inventory.
+
+### Gating the guide URL
+
+An IPTV player accepts a bare URL and cannot send headers, so the guide can only
+be gated by something the URL itself carries. Set `GUIDE_TOKEN` and use either
+form — they are equivalent:
+
+```
+https://<host>/<GUIDE_TOKEN>/epg.xml.gz
+https://<host>/epg.xml.gz?token=<GUIDE_TOKEN>
+```
+
+Everything else then answers 404 without it, including `/`, so a scanner learns
+nothing. `/health` stays exempt: the container healthcheck calls it with no
+token and it reveals only whether a guide exists.
+
+Serve this over TLS. The token sits in the URL, so plain HTTP exposes it to
+anyone on the path, and URLs leak through logs, history and `Referer` headers.
+Treat it as a bearer secret: whoever holds the URL has the guide.
+
+### Gating /status and /refresh
 
 By default the restricted endpoints accept private and loopback callers only.
 Behind a reverse proxy that check is useless, because every request then carries

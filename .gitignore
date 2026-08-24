@@ -8,3 +8,6 @@ data/cache/
 *.m3u
 *.m3u8
 *.xml.gz
+
+# Secrets: tokens live here, never in the repo.
+.env

@@ -17,6 +17,15 @@ services:
       # Matches the upstream regeneration cycle.
       REFRESH_HOURS: "3"
       FUZZY_CUTOFF: "0.92"
+      # Gates the guide URL itself. Players cannot send headers, so the token
+      # travels in the URL: /<token>/epg.xml.gz or ?token=<value>.
+      # Leave unset to serve the guide openly. Set it from a .env file or the
+      # deployment's environment; never commit the value.
+      GUIDE_TOKEN: "${GUIDE_TOKEN:-}"
+      # Gates /status and /refresh. REQUIRED behind a reverse proxy: every
+      # request then arrives with the proxy's private address, so the
+      # private-caller check alone would admit the whole internet.
+      ADMIN_TOKEN: "${ADMIN_TOKEN:-}"
 
 volumes:
   epg-data:

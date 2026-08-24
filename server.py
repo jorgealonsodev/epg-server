@@ -11,6 +11,7 @@ import shutil
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import unquote
 
 from epg_rewrite import load_channel_names, parse_sources, rewrite, to_gzip
 
@@ -34,6 +35,10 @@ BUNDLED_CHANNELS = os.environ.get("BUNDLED_CHANNELS", "/app/channels.txt")
 # exists. Set ADMIN_TOKEN to reach them through a reverse proxy, where every
 # request arrives with the proxy's own private address.
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "").strip()
+# IPTV players accept a bare URL and cannot send headers, so the guide itself
+# can only be gated by something carried in the URL. Accepted either as a path
+# prefix, /<token>/epg.xml.gz, or as ?token=<value>. Unset means open.
+GUIDE_TOKEN = os.environ.get("GUIDE_TOKEN", "").strip()
 
 
 class State:
@@ -170,8 +175,40 @@ class Handler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.do_GET()
 
+    def _guide_authorised(self, path, query):
+        """Token from the path prefix or the query string. Both are equal."""
+        if not GUIDE_TOKEN:
+            return True, path
+        prefix = f"/{GUIDE_TOKEN}"
+        if path == prefix or path.startswith(prefix + "/"):
+            return True, path[len(prefix):] or "/"
+        supplied = ""
+        for part in query.split("&"):
+            key, _, value = part.partition("=")
+            if key == "token":
+                supplied = unquote(value)
+                break
+        return secrets.compare_digest(supplied, GUIDE_TOKEN), path
+
     def do_GET(self):
-        path = self.path.split("?")[0].rstrip("/") or "/"
+        raw = self.path
+        path, _, query = raw.partition("?")
+        path = path.rstrip("/") or "/"
+
+        if path == "/health":
+            # Exempt: the container healthcheck calls this with no token, and
+            # it reveals nothing beyond whether a guide has been built.
+            with STATE.lock:
+                ready = STATE.gz is not None
+            self._send(200 if ready else 503,
+                       b"ok" if ready else b"no guide", "text/plain")
+            return
+
+        ok, path = self._guide_authorised(path, query)
+        if not ok:
+            # 404, not 403: a refusal would confirm the path is real.
+            self._send(404, b"not found", "text/plain")
+            return
 
         if path == "/":
             # Deliberately terse: this is what scanners see.
@@ -220,12 +257,6 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(503, b"guide not built yet", "text/plain")
                 return
             self._send(200, xml, "application/xml; charset=utf-8")
-            return
-
-        if path == "/health":
-            with STATE.lock:
-                ok = STATE.gz is not None
-            self._send(200 if ok else 503, b"ok" if ok else b"no guide", "text/plain")
             return
 
         if path == "/refresh":
