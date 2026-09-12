@@ -68,6 +68,10 @@ ALIASES = {
     "tvg": "tvg tv galicia",
     # '#0' is read aloud as 'Cero'; the playlist spells the pronunciation
     "m cero": "m 0",
+    # Decorative superscript, not a timeshift: the EPG marks those '+1'
+    # explicitly (Disney Channel +1, TCM +1) and has no 'M+ Comedia +1'.
+    # The digit guard blocks this one, so it needs an alias.
+    "m comedia 1": "m comedia",
 }
 
 QUALITY = r"(?:uhd|4k|fhd|full\s*hd|hd|sd|1080p?|720p?|hevc|h265|multi|vip|backup|alt)"
