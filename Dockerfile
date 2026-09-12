@@ -6,8 +6,9 @@ COPY matcher.py epg_rewrite.py server.py ./
 
 # Default channel list, baked in. A bind mount or a fresh named volume starts
 # empty, and Docker creates a missing bind source silently rather than failing,
-# so the service must be able to run with no volume content at all. On first
-# run it seeds /data/channels.txt from this copy.
+# so the service must be able to run with no volume content at all. It seeds
+# /data/channels.txt from this copy, and refreshes it when this one is newer
+# unless the file in the volume was edited by hand.
 COPY data/channels.txt /app/channels.txt
 
 RUN useradd --create-home --uid 1000 epg \

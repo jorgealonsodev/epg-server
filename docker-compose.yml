@@ -17,7 +17,8 @@ services:
       # A named volume, not a relative bind mount: Docker silently creates a
       # missing bind source as an empty root-owned directory, which left the
       # service with no channel list and no way to report it clearly.
-      # The image seeds channels.txt here on first run; edit it to customise.
+      # The image seeds channels.txt here on first run and refreshes it when a
+      # redeploy ships a newer list. A copy edited here is never replaced.
       - epg-data:/data
     environment:
       # Every tunable falls back to the value shown, so the stack runs with no

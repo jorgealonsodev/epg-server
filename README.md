@@ -127,7 +127,16 @@ and credentials out of this file.
 
 The list lives in the `epg-data` named volume. A copy is baked into the image,
 and the service seeds the volume from it on first run, so a fresh deployment
-works with no manual file placement. Edit the copy in the volume to customise:
+works with no manual file placement.
+
+A redeploy carrying a newer list replaces the copy in the volume, because a
+stale list silently leaves renamed channels without a guide. The previous file
+is kept as `channels.txt.bak` the first time this happens on a volume that
+predates the stamp.
+
+A list you edited in the volume is never replaced — the service compares it
+against `.channels-seed`, which records the shipped list it was seeded from.
+The log says so on every start, and deleting the file adopts the shipped list:
 
 ```bash
 docker exec -it epg-rewriter vi /data/channels.txt

@@ -4,6 +4,11 @@ __pycache__/
 # Runtime cache: rebuilt on every start.
 data/cache/
 
+# Written in the volume at runtime: the seed stamp and the copy kept when the
+# shipped list replaces an older one.
+data/.channels-seed
+data/*.bak
+
 # Never commit a playlist: stream URLs embed provider credentials.
 *.m3u
 *.m3u8

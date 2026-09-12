@@ -3,6 +3,7 @@
 Standard library only, so the image needs no pip install.
 Never contacts the IPTV provider — channel names come from a local file.
 """
+import hashlib
 import logging
 import os
 import ipaddress
@@ -84,31 +85,93 @@ class State:
 STATE = State()
 
 
-def resolve_channels_file():
-    """Return a readable channel list, seeding the volume on first run.
+def digest(path):
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()
 
-    Order: the configured path, else the copy bundled in the image. When the
-    configured path is missing but writable, the bundled copy is written there
-    so the file becomes editable and survives restarts.
-    """
-    if os.path.exists(CHANNELS_FILE):
-        return CHANNELS_FILE
-    if not os.path.exists(BUNDLED_CHANNELS):
-        raise RuntimeError(
-            f"no channel list: {CHANNELS_FILE} is missing and no bundled copy "
-            f"at {BUNDLED_CHANNELS}")
+
+def stamp_path(channels_file):
+    """Where the seed stamp lives: beside the list it describes."""
+    return os.path.join(os.path.dirname(channels_file) or ".", ".channels-seed")
+
+
+def read_stamp(path):
     try:
-        os.makedirs(os.path.dirname(CHANNELS_FILE), exist_ok=True)
-        shutil.copyfile(BUNDLED_CHANNELS, CHANNELS_FILE)
-        log.warning("%s was missing; seeded it from the bundled list. "
-                    "Edit that file to customise, it persists in the volume.",
-                    CHANNELS_FILE)
-        return CHANNELS_FILE
+        with open(path, encoding="utf-8") as fh:
+            return fh.read().strip()
+    except OSError:
+        return ""
+
+
+def resolve_channels_file(channels_file=None, bundled=None):
+    """Return a readable channel list, keeping the volume copy up to date.
+
+    The volume holds the live list and the image holds the shipped one. A
+    refreshed image has to reach the volume — the provider renames channels
+    and the old list silently leaves them without a guide — but a list the
+    operator edited by hand has to survive.
+
+    The stamp beside the list records which shipped list produced it, which
+    is what tells those two cases apart: matching means untouched and safe to
+    replace, differing means hand-edited and left alone.
+    """
+    channels_file = channels_file or CHANNELS_FILE
+    bundled = bundled or BUNDLED_CHANNELS
+
+    if not os.path.exists(bundled):
+        if os.path.exists(channels_file):
+            return channels_file
+        raise RuntimeError(
+            f"no channel list: {channels_file} is missing and no bundled copy "
+            f"at {bundled}")
+
+    stamp_file = stamp_path(channels_file)
+    stamp = read_stamp(stamp_file)
+    shipped = digest(bundled)
+    exists = os.path.exists(channels_file)
+
+    if exists and stamp == shipped:
+        return channels_file
+
+    backup = ""
+    if exists:
+        current = digest(channels_file)
+        if stamp and current != stamp:
+            log.warning(
+                "%s was edited here, so the list shipped in the image was not "
+                "applied. Delete it to adopt the shipped list.", channels_file)
+            return channels_file
+        if not stamp:
+            # Seeded before stamps existed: adopt the shipped list, but never
+            # discard what is already there without leaving a copy behind.
+            backup = channels_file + ".bak"
+
+    try:
+        os.makedirs(os.path.dirname(channels_file) or ".", exist_ok=True)
+        if backup:
+            shutil.copyfile(channels_file, backup)
+        shutil.copyfile(bundled, channels_file)
+        with open(stamp_file, "w", encoding="utf-8") as fh:
+            fh.write(shipped + "\n")
     except OSError as exc:
+        if exists:
+            log.warning("%s could not be updated from the bundled list (%s); "
+                        "serving the copy already in place.",
+                        channels_file, exc)
+            return channels_file
         log.warning("%s is missing and not writable (%s); using the bundled "
                     "list read-only. Mount a writable volume to customise it.",
-                    CHANNELS_FILE, exc)
-        return BUNDLED_CHANNELS
+                    channels_file, exc)
+        return bundled
+
+    if not exists:
+        log.warning("%s was missing; seeded it from the bundled list. "
+                    "Edit that file to customise, it persists in the volume.",
+                    channels_file)
+    else:
+        log.warning("%s replaced with the list shipped in the image%s.",
+                    channels_file, f"; previous copy kept at {backup}" if backup else "")
+    return channels_file
 
 
 def build():
