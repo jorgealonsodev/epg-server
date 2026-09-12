@@ -16,6 +16,8 @@ ALIASES = {
     **{f"m lcampeones {n}": f"m liga de campeones {n}" for n in range(2, 14)},
     "m lcampeon2": "m liga de campeones2",
     "m lcampeon3": "m liga de campeones 3",
+    # Same channels, glued spelling: the playlist added 6-13 without the space
+    **{f"m lcampeon{n}": f"m liga de campeones {n}" for n in range(6, 14)},
     # Spacing and glued words
     "tele madrid": "telemadrid",
     "la sexta": "lasexta",
@@ -57,6 +59,15 @@ ALIASES = {
     "bom": "bom cine",
     "gol play": "gol",
     "m ellas": "movistar ellas vamos",
+    # Glued digits the playlist writes without a space
+    "etb1": "etb 1",
+    "etb2": "etb 2",
+    # Regional suffix present on the playlist side only
+    "esport3 cat": "esport 3",
+    # The EPG spells out the network behind the initials
+    "tvg": "tvg tv galicia",
+    # '#0' is read aloud as 'Cero'; the playlist spells the pronunciation
+    "m cero": "m 0",
 }
 
 QUALITY = r"(?:uhd|4k|fhd|full\s*hd|hd|sd|1080p?|720p?|hevc|h265|multi|vip|backup|alt)"
