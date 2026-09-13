@@ -125,6 +125,30 @@ followed by a space — a bare `#` starts a real channel name in the wild
 Regenerate it when the provider adds or renames channels. Names only: keep URLs
 and credentials out of this file.
 
+### Regenerating the list
+
+`extract_channels.py` does it. Run it on a workstation, never in the container:
+the service must not hold the subscription URL nor connect to the provider, so
+the tool is not copied into the image.
+
+Put the subscription URL in `.env`, which is gitignored, so it survives between
+runs and the next regeneration does not stall looking for it:
+
+```
+PLAYLIST_URL=http://<panel>/get.php?username=<user>&password=<pass>&type=m3u_plus
+```
+
+```bash
+./extract_channels.py --dry-run   # report what the provider changed
+./extract_channels.py             # write data/channels.txt
+```
+
+It keeps the playlist's `[ES] ` groups (everything else is VOD and series),
+drops duplicates, sorts case-insensitively, and refuses to write a name that
+looks like a URL. It prints the added and removed names — those are what to
+check against the guide, since a new name often needs an alias in
+`matcher.py`. Then commit the list and redeploy.
+
 The list lives in the `epg-data` named volume. A copy is baked into the image,
 and the service seeds the volume from it on first run, so a fresh deployment
 works with no manual file placement.
