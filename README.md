@@ -41,55 +41,25 @@ Set that as the player's guide URL and leave the playlist URL exactly as it is.
 
 ## Updating the channel list
 
-Run this when the provider adds or renames channels — renamed ones silently
-lose their guide, and unknown names showing up in `/status` is the signal.
+Do it when the provider adds or renames channels — renamed ones silently lose
+their guide, and unknown names showing up in `/status` is the signal.
 
-### 1. Record the subscription URL (once)
+Extraction happens **outside this repository**, in a local workspace, with a
+tool that reads the subscription URL and downloads the playlist. That tool is
+deliberately not here and not in the image: this service must never hold the
+URL nor connect to the provider, and a script that cannot be deployed cannot
+quietly become part of the service later.
 
-Put it in `.env`, which is gitignored, so it survives between runs:
+The workflow it produces:
 
-```
-PLAYLIST_URL=http://<panel>/get.php?username=<user>&password=<pass>&type=m3u_plus
-```
+1. Regenerate `data/channels.txt` — names only, no URLs, no credentials.
+2. Check the newly added names against the guide. A new name often needs an
+   alias in `matcher.py` before it matches; see [Coverage](#coverage).
+3. Commit the list and redeploy. The service replaces the copy in the volume
+   by itself.
 
-Do this even if you regenerate by hand. The URL went unrecorded once and the
-refresh stalled outright: it cannot be reconstructed from a saved playlist,
-whose hostnames are streaming edges with token-proxied links.
-
-### 2. Extract the names
-
-```bash
-./extract_channels.py --dry-run   # report what the provider changed
-./extract_channels.py             # write data/channels.txt
-```
-
-Run it on a workstation, never in the container. The tool is deliberately not
-copied into the image, so the container holds no subscription URL and opens no
-connection to the provider.
-
-It keeps the playlist's `[ES] ` groups (the rest is VOD and series), drops
-duplicates, sorts case-insensitively, and refuses to write a name that looks
-like a URL.
-
-### 3. Check what it reports
-
-```
-471 -> 501 channels (+46 -16)
-  - DAZN ACB 1
-  + DAZN EVENTOS 1
-```
-
-The added names are the actionable part. A new name often needs an alias in
-`matcher.py` before it matches — see [Coverage](#coverage). Removed names may
-leave dead aliases behind, which are harmless but worth a look.
-
-### 4. Commit and redeploy
-
-The list ships inside the image, so the change reaches the service through an
-ordinary redeploy.
-
-- [ ] `data/channels.txt` contains names only — no URLs, no credentials
-- [ ] Added names checked against the guide, aliases added where needed
+- [ ] `data/channels.txt` contains names only
+- [ ] Added names checked against the guide, aliases added where verified
 - [ ] Redeployed, and the log shows `channels.txt replaced with the list shipped in the image`
 - [ ] `/status` reports the channel count you expect
 
@@ -153,7 +123,8 @@ Portainer, set the same names as stack environment variables.
 | `GUIDE_TOKEN` | unset | Gates the guide URL. Carried in the URL, not a header. |
 | `ADMIN_TOKEN` | unset | Gates `/status` and `/refresh`. Sent as a header. |
 
-`PLAYLIST_URL` is read by `extract_channels.py` only. The service never sees it.
+There is no subscription setting here, by design. The playlist URL belongs to
+the extraction tool outside this repository; the service never sees it.
 
 ## Exposing this publicly
 
@@ -264,4 +235,3 @@ python3 -m unittest discover -v
 | `server.py` | HTTP service, refresh loop, volume seeding |
 | `epg_rewrite.py` | XMLTV parsing and rewriting |
 | `matcher.py` | Name normalization, aliases, matching tiers |
-| `extract_channels.py` | Regenerates `channels.txt`. Not shipped in the image. |
